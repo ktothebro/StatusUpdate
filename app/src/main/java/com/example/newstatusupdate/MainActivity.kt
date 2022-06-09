@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     // declare firstore database
     private lateinit var db: FirebaseFirestore
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
     private lateinit var mEmail: String
     private lateinit var mPassword: String
 
@@ -49,18 +49,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
 
 
-        binding.resetButton.setOnClickListener {
-            binding.etEmail.setText("")
-            binding.etPassword.setText("")
+        mBinding.resetButton.setOnClickListener {
+            mBinding.etEmail.setText("")
+            mBinding.etPassword.setText("")
         }
 
-        binding.submitButton.setOnClickListener {
-            mEmail = binding.etEmail.text.toString()
-            mPassword = binding.etPassword.text.toString()
+        mBinding.submitButton.setOnClickListener {
+            mEmail = mBinding.etEmail.text.toString()
+            mPassword = mBinding.etPassword.text.toString()
             signInWithEmailAndPassword()
         }
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
                     val user = auth.currentUser
                     getUserDescription()
-                    updateUI(user)
+                    // updateUI(user)
                 } else {
                     // If signin fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data?.get("description")}")
                 } else {
                     Log.d(TAG, "No such document")
                 }
@@ -127,9 +127,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 //
-//    // [START declare_auth]
+//    // declare auth
 //    private lateinit var auth: FirebaseAuth
-//    // [END declare_auth]
+
 //
 //    val RC_SIGN_IN: Int = 1
 //
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 //            signIn()
 //        }
 //
-//        // [START config_signin]
+
 //        // Configure Google Sign In
 //        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestIdToken(getString(R.string.web_client_id))
@@ -155,32 +155,32 @@ class MainActivity : AppCompatActivity() {
 //            .build()
 //
 ////        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-//        // [END config_signin]
+
 //
 //        configureGoogleSignIn()
 //
-//        // [START initialize_auth]
+
 //        // Initialize Firebase Auth
 //        auth = Firebase.auth
-//        // [END initialize_auth]
+
 //    }
 
-//    // [START on_start_check_user]
+//    // check if user is signed in
 //    override fun onStart() {
 //        super.onStart()
 //        // Check if user is signed in (non-null) and update UI accordingly.
 //        val currentUser = auth.currentUser
 //        updateUI(currentUser)
 //    }
-//    // [END on_start_check_user]
+
 //
-//    // [START onactivityresult]
+//
 ////    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 ////        super.onActivityResult(requestCode, resultCode, data)
 ////    }
-//    // [END onactivityresult]
 //
-//    // [START auth_with_google]
+//
+//    // authenticate firebase with google
 //    private fun firebaseAuthWithGoogle(idToken: String) {
 //        Toast.makeText(this, "Func Tried", Toast.LENGTH_LONG).show()
 //        val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -199,9 +199,9 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //    }
-//    // [END auth_with_google]
 //
-//    // [START signin]
+//
+//    // Signin
 //    private fun signIn() {
 //        val signInIntent = mGoogleSignInClient.signInIntent
 //
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        Toast.makeText(this, "Done with func", Toast.LENGTH_LONG).show()
 //    }
-//    // [END signin]
+//
 //
 //    private fun updateUI(user: FirebaseUser?) {
 //        // Navigate to MainActivity
